@@ -54,8 +54,11 @@ const FloatingBackground = () => {
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, w, h);
 
-      const mx = (mouseRef.current.x - 0.5) * 0.15;
-      const my = (mouseRef.current.y - 0.5) * 0.1;
+      // Auto camera drift + mouse parallax
+      const driftX = Math.sin(time * 0.7) * 0.06 + Math.cos(time * 0.3) * 0.03;
+      const driftY = Math.cos(time * 0.5) * 0.04 + Math.sin(time * 0.2) * 0.02;
+      const mx = (mouseRef.current.x - 0.5) * 0.15 + driftX;
+      const my = (mouseRef.current.y - 0.5) * 0.1 + driftY;
 
       // === LAYER 1: Perspective grid ===
       ctx.save();
