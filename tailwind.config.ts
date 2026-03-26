@@ -96,6 +96,24 @@ export default {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        "aurora-drift-1": {
+          "0%, 100%": { transform: "translate(var(--mx,0px), var(--my,0px)) scale(1)" },
+          "33%": { transform: "translate(calc(var(--mx,0px) + 60px), calc(var(--my,0px) - 40px)) scale(1.1)" },
+          "66%": { transform: "translate(calc(var(--mx,0px) - 30px), calc(var(--my,0px) + 50px)) scale(0.95)" },
+        },
+        "aurora-drift-2": {
+          "0%, 100%": { transform: "translate(calc(var(--mx,0px) * -0.7), calc(var(--my,0px) * -0.7)) scale(1)" },
+          "50%": { transform: "translate(calc(var(--mx,0px) * -0.7 - 50px), calc(var(--my,0px) * -0.7 + 60px)) scale(1.15)" },
+        },
+        "aurora-drift-3": {
+          "0%, 100%": { transform: "translate(calc(var(--mx,0px) * 0.5), calc(var(--my,0px) * 0.5)) scale(1)" },
+          "40%": { transform: "translate(calc(var(--mx,0px) * 0.5 + 40px), calc(var(--my,0px) * 0.5 - 30px)) scale(1.08)" },
+          "80%": { transform: "translate(calc(var(--mx,0px) * 0.5 - 50px), calc(var(--my,0px) * 0.5 + 40px)) scale(0.92)" },
+        },
+        "shimmer-slow": {
+          "0%": { backgroundPosition: "-300% 0" },
+          "100%": { backgroundPosition: "300% 0" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
