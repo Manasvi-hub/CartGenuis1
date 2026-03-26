@@ -10,7 +10,7 @@ export interface Product {
 }
 
 export const products: Product[] = [
-  // Fashion (3)
+  // ── Fashion (6) ──
   {
     id: "1",
     name: "Red Dress",
@@ -41,8 +41,38 @@ export const products: Product[] = [
     description: "Premium genuine leather biker jacket",
     tags: ["jacket", "fashion", "leather", "outerwear"],
   },
+  {
+    id: "16",
+    name: "Silk Blouse",
+    category: "Fashion",
+    price: 3299,
+    rating: 4.5,
+    image: "https://images.unsplash.com/photo-1598554747436-c9293d6a588f?w=600&h=800&fit=crop",
+    description: "Luxurious silk blouse with pearl buttons",
+    tags: ["blouse", "fashion", "silk", "women"],
+  },
+  {
+    id: "17",
+    name: "Chino Trousers",
+    category: "Fashion",
+    price: 2199,
+    rating: 4.3,
+    image: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=600&h=800&fit=crop",
+    description: "Tailored slim-fit chino trousers",
+    tags: ["trousers", "fashion", "casual", "men"],
+  },
+  {
+    id: "18",
+    name: "Denim Jacket",
+    category: "Fashion",
+    price: 3499,
+    rating: 4.4,
+    image: "https://images.unsplash.com/photo-1576995853123-5a10305d93c0?w=600&h=800&fit=crop",
+    description: "Classic washed denim jacket",
+    tags: ["jacket", "fashion", "denim", "unisex"],
+  },
 
-  // Electronics (3)
+  // ── Electronics (6) ──
   {
     id: "3",
     name: "Laptop Pro",
@@ -73,8 +103,38 @@ export const products: Product[] = [
     description: "Feature-rich smartwatch with health tracking",
     tags: ["watch", "electronics", "wearable", "fitness"],
   },
+  {
+    id: "19",
+    name: "Tablet Ultra",
+    category: "Electronics",
+    price: 42999,
+    rating: 4.7,
+    image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&h=800&fit=crop",
+    description: "Ultra-thin tablet with stunning display",
+    tags: ["tablet", "electronics", "tech", "portable"],
+  },
+  {
+    id: "20",
+    name: "Mechanical Keyboard",
+    category: "Electronics",
+    price: 8999,
+    rating: 4.6,
+    image: "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=600&h=800&fit=crop",
+    description: "RGB mechanical keyboard with cherry switches",
+    tags: ["keyboard", "electronics", "gaming", "peripherals"],
+  },
+  {
+    id: "21",
+    name: "Wireless Mouse",
+    category: "Electronics",
+    price: 2499,
+    rating: 4.4,
+    image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=600&h=800&fit=crop",
+    description: "Ergonomic wireless mouse with precision tracking",
+    tags: ["mouse", "electronics", "peripherals", "wireless"],
+  },
 
-  // Footwear (3)
+  // ── Footwear (6) ──
   {
     id: "5",
     name: "Running Shoes",
@@ -105,8 +165,38 @@ export const products: Product[] = [
     description: "Waterproof all-terrain hiking boots",
     tags: ["boots", "footwear", "hiking", "outdoor"],
   },
+  {
+    id: "22",
+    name: "Canvas Slip-Ons",
+    category: "Footwear",
+    price: 1999,
+    rating: 4.3,
+    image: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=600&h=800&fit=crop",
+    description: "Casual canvas slip-on shoes for everyday wear",
+    tags: ["slip-ons", "footwear", "casual", "canvas"],
+  },
+  {
+    id: "23",
+    name: "Formal Oxfords",
+    category: "Footwear",
+    price: 7999,
+    rating: 4.6,
+    image: "https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=600&h=800&fit=crop",
+    description: "Classic leather oxford shoes for formal occasions",
+    tags: ["oxfords", "footwear", "formal", "leather"],
+  },
+  {
+    id: "24",
+    name: "Sports Sandals",
+    category: "Footwear",
+    price: 1499,
+    rating: 4.2,
+    image: "https://images.unsplash.com/photo-1603487742131-4160ec999306?w=600&h=800&fit=crop",
+    description: "Comfortable sport sandals with arch support",
+    tags: ["sandals", "footwear", "sports", "summer"],
+  },
 
-  // Accessories (3)
+  // ── Accessories (6) ──
   {
     id: "9",
     name: "Sunglasses",
@@ -137,8 +227,38 @@ export const products: Product[] = [
     description: "Slim genuine leather bifold wallet",
     tags: ["wallet", "accessories", "leather", "men"],
   },
+  {
+    id: "25",
+    name: "Wrist Watch Classic",
+    category: "Accessories",
+    price: 5999,
+    rating: 4.5,
+    image: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&h=800&fit=crop",
+    description: "Minimalist analog wrist watch with leather strap",
+    tags: ["watch", "accessories", "classic", "analog"],
+  },
+  {
+    id: "26",
+    name: "Canvas Tote Bag",
+    category: "Accessories",
+    price: 999,
+    rating: 4.2,
+    image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=600&h=800&fit=crop",
+    description: "Eco-friendly reusable canvas tote bag",
+    tags: ["tote", "accessories", "bag", "eco"],
+  },
+  {
+    id: "27",
+    name: "Beanie Hat",
+    category: "Accessories",
+    price: 799,
+    rating: 4.3,
+    image: "https://images.unsplash.com/photo-1576871337632-b9aef4c17ab9?w=600&h=800&fit=crop",
+    description: "Soft knit beanie hat for cold weather",
+    tags: ["hat", "accessories", "winter", "knit"],
+  },
 
-  // Lifestyle (3)
+  // ── Lifestyle (6) ──
   {
     id: "8",
     name: "Yoga Mat",
@@ -169,28 +289,73 @@ export const products: Product[] = [
     description: "Insulated stainless steel water bottle",
     tags: ["bottle", "lifestyle", "fitness", "eco"],
   },
+  {
+    id: "28",
+    name: "Resistance Bands",
+    category: "Lifestyle",
+    price: 699,
+    rating: 4.4,
+    image: "https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=600&h=800&fit=crop",
+    description: "Set of 5 resistance bands for home workouts",
+    tags: ["bands", "lifestyle", "fitness", "workout"],
+  },
+  {
+    id: "29",
+    name: "Scented Candle",
+    category: "Lifestyle",
+    price: 599,
+    rating: 4.6,
+    image: "https://images.unsplash.com/photo-1602607688066-6c70f5fa3a38?w=600&h=800&fit=crop",
+    description: "Hand-poured soy wax lavender scented candle",
+    tags: ["candle", "lifestyle", "home", "relaxation"],
+  },
+  {
+    id: "30",
+    name: "Journal Notebook",
+    category: "Lifestyle",
+    price: 499,
+    rating: 4.5,
+    image: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=600&h=800&fit=crop",
+    description: "Premium hardcover journal with dotted pages",
+    tags: ["journal", "lifestyle", "writing", "stationery"],
+  },
 ];
 
 // Collaborative filtering simulation data
 export const alsoViewed: Record<string, string[]> = {
   // Fashion cluster
-  "1": ["2", "7", "9"],
-  "2": ["1", "7", "12"],
-  "7": ["1", "2", "9"],
+  "1": ["2", "16", "9"],
+  "2": ["1", "7", "18"],
+  "7": ["1", "18", "17"],
+  "16": ["1", "2", "17"],
+  "17": ["2", "7", "18"],
+  "18": ["7", "16", "17"],
   // Electronics cluster
-  "3": ["4", "6", "11"],
-  "4": ["3", "6", "11"],
-  "6": ["3", "4", "11"],
+  "3": ["19", "20", "6"],
+  "4": ["6", "21", "11"],
+  "6": ["3", "4", "19"],
+  "19": ["3", "20", "21"],
+  "20": ["21", "3", "19"],
+  "21": ["20", "4", "19"],
   // Footwear cluster
-  "5": ["12", "13", "8"],
-  "12": ["5", "13", "9"],
-  "13": ["5", "12", "10"],
+  "5": ["12", "22", "24"],
+  "12": ["5", "13", "23"],
+  "13": ["5", "23", "24"],
+  "22": ["5", "12", "24"],
+  "23": ["13", "12", "22"],
+  "24": ["5", "22", "13"],
   // Accessories cluster
-  "9": ["1", "14", "7"],
-  "11": ["3", "4", "6"],
-  "14": ["9", "7", "11"],
+  "9": ["25", "14", "27"],
+  "11": ["4", "26", "25"],
+  "14": ["9", "25", "27"],
+  "25": ["9", "14", "26"],
+  "26": ["27", "25", "11"],
+  "27": ["9", "26", "14"],
   // Lifestyle cluster
-  "8": ["5", "10", "15"],
-  "10": ["8", "13", "15"],
-  "15": ["8", "10", "5"],
+  "8": ["28", "10", "15"],
+  "10": ["8", "15", "29"],
+  "15": ["8", "28", "30"],
+  "28": ["8", "15", "29"],
+  "29": ["30", "10", "8"],
+  "30": ["29", "15", "28"],
 };
