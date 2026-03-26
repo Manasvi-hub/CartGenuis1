@@ -47,7 +47,8 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      <FloatingBackground />
       <Navbar
         cartCount={cart.totalCount}
         onCartClick={() => cart.setIsOpen(true)}
