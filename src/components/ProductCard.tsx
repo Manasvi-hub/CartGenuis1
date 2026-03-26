@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ShoppingCart, Eye, Star } from "lucide-react";
+import { ShoppingCart, Eye, Star, Award, TrendingUp } from "lucide-react";
 import type { Product } from "@/data/products";
 
 interface ProductCardProps {
@@ -10,8 +10,14 @@ interface ProductCardProps {
   onAddToCart: (id: string) => void;
 }
 
+const badgeConfig = {
+  "Best Seller": { icon: Award, className: "bg-primary/90 text-primary-foreground" },
+  "Popular Variant": { icon: TrendingUp, className: "bg-accent/90 text-accent-foreground" },
+};
+
 const ProductCard = ({ product, index, onView, onAddToCart }: ProductCardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
+  const badge = product.badge ? badgeConfig[product.badge] : null;
 
   return (
     <motion.div
@@ -21,6 +27,14 @@ const ProductCard = ({ product, index, onView, onAddToCart }: ProductCardProps) 
       className="group relative glass product-card-hover rounded-xl overflow-hidden cursor-pointer"
       onClick={() => onView(product.id)}
     >
+      {/* Badge */}
+      {badge && (
+        <div className={`absolute top-3 left-3 z-10 flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold ${badge.className}`}>
+          <badge.icon className="w-3 h-3" />
+          {product.badge}
+        </div>
+      )}
+
       {/* Image */}
       <div className="relative aspect-[3/4] overflow-hidden">
         {!imageLoaded && (
@@ -35,7 +49,6 @@ const ProductCard = ({ product, index, onView, onAddToCart }: ProductCardProps) 
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           onLoad={() => setImageLoaded(true)}
         />
-        {/* Dark gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
 
         {/* Hover overlay */}
@@ -59,9 +72,16 @@ const ProductCard = ({ product, index, onView, onAddToCart }: ProductCardProps) 
 
       {/* Content */}
       <div className="absolute bottom-0 left-0 right-0 p-4">
-        <p className="text-xs text-primary font-medium uppercase tracking-wider mb-1">
-          {product.category}
-        </p>
+        <div className="flex items-center gap-2 mb-1">
+          <p className="text-xs text-primary font-medium uppercase tracking-wider">
+            {product.category}
+          </p>
+          {product.variant && (
+            <span className="text-xs text-muted-foreground glass-subtle px-1.5 py-0.5 rounded">
+              {product.variant}
+            </span>
+          )}
+        </div>
         <h3 className="font-display font-semibold text-lg text-foreground mb-1">
           {product.name}
         </h3>
