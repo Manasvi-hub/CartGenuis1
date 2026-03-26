@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import RecommendationSection from "@/components/RecommendationSection";
-import ProductCard from "@/components/ProductCard";
+import ExploreVariants from "@/components/ExploreVariants";
 import CartDrawer from "@/components/CartDrawer";
 import AuthModal from "@/components/AuthModal";
 import { products } from "@/data/products";
@@ -11,7 +11,6 @@ import { useRecommendations } from "@/hooks/useRecommendations";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 import FloatingBackground from "@/components/FloatingBackground";
-import { motion } from "framer-motion";
 
 const Index = () => {
   const productsRef = useRef<HTMLDivElement>(null);
@@ -38,7 +37,6 @@ const Index = () => {
       toast("Please sign in to continue", { description: "Login required for checkout" });
     } else {
       toast.success("Proceeding to checkout…");
-      // Checkout flow would go here
     }
   };
 
@@ -58,38 +56,25 @@ const Index = () => {
       />
       <HeroSection onExplore={scrollToProducts} />
 
-      {/* All Products */}
-      <section ref={productsRef} className="py-16">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-10"
-          >
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-2">All Products</h2>
-            <p className="text-muted-foreground">Browse our curated collection</p>
-          </motion.div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {products.map((product, i) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                index={i}
-                onView={handleView}
-                onAddToCart={handleAddToCart}
-              />
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Explore Variants */}
+      <div ref={productsRef}>
+        <ExploreVariants
+          onView={handleView}
+          onAddToCart={handleAddToCart}
+          highlightBaseType={lastViewed?.baseType}
+        />
+      </div>
 
       {/* AI Recommendations */}
       <RecommendationSection
         title="Recommended For You"
         subtitle="Based on your recent activity"
         products={contentBased}
-        reason={lastViewed ? `Because you explored ${lastViewed.category}` : undefined}
+        reason={
+          lastViewed
+            ? `More like ${lastViewed.baseType} · Other styles you may like`
+            : undefined
+        }
         onView={handleView}
         onAddToCart={handleAddToCart}
       />
@@ -114,7 +99,6 @@ const Index = () => {
         </div>
       </footer>
 
-      {/* Cart Drawer */}
       <CartDrawer
         isOpen={cart.isOpen}
         onClose={() => cart.setIsOpen(false)}
@@ -125,7 +109,6 @@ const Index = () => {
         onCheckout={handleCheckout}
       />
 
-      {/* Auth Modal */}
       <AuthModal
         isOpen={auth.showAuth}
         onClose={() => auth.setShowAuth(false)}
