@@ -89,7 +89,7 @@ const Index = () => {
         title="Recommended For You"
         subtitle="Based on your recent activity"
         products={contentBased}
-        reason={lastViewed ? `Because you viewed ${lastViewed.name}` : undefined}
+        reason={lastViewed ? `Because you explored ${lastViewed.category}` : undefined}
         onView={handleView}
         onAddToCart={handleAddToCart}
       />
