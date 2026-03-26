@@ -1,18 +1,22 @@
-import { useRef, useState, useCallback } from "react";
-import { Toaster } from "@/components/ui/sonner";
+import { useRef, useCallback } from "react";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import RecommendationSection from "@/components/RecommendationSection";
 import ProductCard from "@/components/ProductCard";
+import CartDrawer from "@/components/CartDrawer";
+import AuthModal from "@/components/AuthModal";
 import { products } from "@/data/products";
 import { useRecommendations } from "@/hooks/useRecommendations";
+import { useCart } from "@/hooks/useCart";
+import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
 
 const Index = () => {
-  const [cartCount, setCartCount] = useState(0);
   const productsRef = useRef<HTMLDivElement>(null);
   const { trackActivity, contentBased, collaborative, lastViewed } = useRecommendations();
+  const cart = useCart();
+  const auth = useAuth();
 
   const handleView = useCallback((id: string) => {
     trackActivity(id, "view");
@@ -22,10 +26,20 @@ const Index = () => {
 
   const handleAddToCart = useCallback((id: string) => {
     trackActivity(id, "purchase");
-    setCartCount((c) => c + 1);
+    cart.addToCart(id);
     const product = products.find((p) => p.id === id);
     if (product) toast.success(`${product.name} added to cart!`);
-  }, [trackActivity]);
+  }, [trackActivity, cart.addToCart]);
+
+  const handleCheckout = () => {
+    if (!auth.user) {
+      auth.setShowAuth(true);
+      toast("Please sign in to continue", { description: "Login required for checkout" });
+    } else {
+      toast.success("Proceeding to checkout…");
+      // Checkout flow would go here
+    }
+  };
 
   const scrollToProducts = () => {
     productsRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -33,7 +47,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navbar cartCount={cartCount} />
+      <Navbar
+        cartCount={cart.totalCount}
+        onCartClick={() => cart.setIsOpen(true)}
+        user={auth.user}
+        onSignOut={auth.signOut}
+        onSignIn={() => auth.setShowAuth(true)}
+      />
       <HeroSection onExplore={scrollToProducts} />
 
       {/* All Products */}
@@ -91,6 +111,24 @@ const Index = () => {
           <p>AI-Powered Smart Shopping — Built for the future of e-commerce.</p>
         </div>
       </footer>
+
+      {/* Cart Drawer */}
+      <CartDrawer
+        isOpen={cart.isOpen}
+        onClose={() => cart.setIsOpen(false)}
+        items={cart.items}
+        subtotal={cart.subtotal}
+        onUpdateQuantity={cart.updateQuantity}
+        onRemoveItem={cart.removeItem}
+        onCheckout={handleCheckout}
+      />
+
+      {/* Auth Modal */}
+      <AuthModal
+        isOpen={auth.showAuth}
+        onClose={() => auth.setShowAuth(false)}
+        onSignIn={auth.signIn}
+      />
     </div>
   );
 };

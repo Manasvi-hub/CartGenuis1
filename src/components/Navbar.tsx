@@ -1,7 +1,16 @@
-import { ShoppingCart, Sparkles, Search } from "lucide-react";
+import { ShoppingCart, Sparkles, Search, User, LogOut } from "lucide-react";
 import { motion } from "framer-motion";
+import type { User as UserType } from "@/hooks/useAuth";
 
-const Navbar = ({ cartCount }: { cartCount: number }) => {
+interface NavbarProps {
+  cartCount: number;
+  onCartClick: () => void;
+  user: UserType | null;
+  onSignOut: () => void;
+  onSignIn: () => void;
+}
+
+const Navbar = ({ cartCount, onCartClick, user, onSignOut, onSignIn }: NavbarProps) => {
   return (
     <motion.nav
       initial={{ opacity: 0, y: -10 }}
@@ -23,8 +32,34 @@ const Navbar = ({ cartCount }: { cartCount: number }) => {
           />
         </div>
 
-        <div className="flex items-center gap-4">
-          <button className="relative p-2 rounded-lg hover:bg-secondary transition-colors">
+        <div className="flex items-center gap-3">
+          {user ? (
+            <div className="flex items-center gap-2">
+              <span className="hidden sm:inline text-sm text-muted-foreground">
+                Hi, <span className="text-foreground font-medium">{user.name}</span>
+              </span>
+              <button
+                onClick={onSignOut}
+                className="p-2 rounded-lg hover:bg-secondary transition-colors"
+                title="Sign out"
+              >
+                <LogOut className="w-4 h-4 text-muted-foreground" />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={onSignIn}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg glass-subtle text-sm text-foreground hover:bg-card/60 transition-colors"
+            >
+              <User className="w-4 h-4" />
+              <span className="hidden sm:inline">Sign In</span>
+            </button>
+          )}
+
+          <button
+            onClick={onCartClick}
+            className="relative p-2 rounded-lg hover:bg-secondary transition-colors"
+          >
             <ShoppingCart className="w-5 h-5 text-foreground" />
             {cartCount > 0 && (
               <motion.span
