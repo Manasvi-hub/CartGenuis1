@@ -10,6 +10,7 @@ import { products } from "@/data/products";
 import { useRecommendations } from "@/hooks/useRecommendations";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
+import FloatingBackground from "@/components/FloatingBackground";
 import { motion } from "framer-motion";
 
 const Index = () => {
