@@ -10,6 +10,7 @@ import { products } from "@/data/products";
 import { useRecommendations } from "@/hooks/useRecommendations";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
+import FloatingBackground from "@/components/FloatingBackground";
 import { motion } from "framer-motion";
 
 const Index = () => {
@@ -46,7 +47,8 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      <FloatingBackground />
       <Navbar
         cartCount={cart.totalCount}
         onCartClick={() => cart.setIsOpen(true)}
@@ -87,7 +89,7 @@ const Index = () => {
         title="Recommended For You"
         subtitle="Based on your recent activity"
         products={contentBased}
-        reason={lastViewed ? `Because you viewed ${lastViewed.name}` : undefined}
+        reason={lastViewed ? `Because you explored ${lastViewed.category}` : undefined}
         onView={handleView}
         onAddToCart={handleAddToCart}
       />
