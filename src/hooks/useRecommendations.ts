@@ -1,5 +1,7 @@
-import { useState, useCallback, useMemo } from "react";
-import { products, alsoViewed, Product } from "@/data/products";
+import { useState, useCallback } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Product } from "@/data/products";
+import { fetchProducts, trackUserActivity, fetchRecommendations } from "@/lib/api";
 
 export interface UserActivity {
   productId: string;
@@ -8,42 +10,41 @@ export interface UserActivity {
 }
 
 export function useRecommendations() {
-  const [activities, setActivities] = useState<UserActivity[]>([]);
   const [lastViewed, setLastViewed] = useState<Product | null>(null);
 
-  const trackActivity = useCallback((productId: string, type: UserActivity["type"]) => {
-    setActivities((prev) => [...prev, { productId, type, timestamp: Date.now() }]);
+  // Fetch all products
+  const { data: allProducts = [], isLoading: isLoadingProducts, error: productError } = useQuery({
+    queryKey: ["products"],
+    queryFn: fetchProducts,
+  });
+
+  // Track activity
+  const trackActivity = useCallback(async (productId: string, type: UserActivity["type"]) => {
+    trackUserActivity(productId, type);
+    
     if (type === "view" || type === "click") {
-      const product = products.find((p) => p.id === productId);
+      const product = allProducts.find((p) => p.id === productId);
       if (product) setLastViewed(product);
     }
-  }, []);
+  }, [allProducts]);
 
-  // Content-based: recommend by same category, weighted by interaction count
-  const contentBased = useMemo(() => {
-    if (activities.length === 0) return products.slice(0, 4);
+  // Fetch content-based recommendations
+  const { data: contentBased = [], isLoading: isLoadingContentBased } = useQuery({
+    queryKey: ["recommendations", "content", lastViewed?.id],
+    queryFn: () => fetchRecommendations(lastViewed?.id),
+    enabled: !!allProducts.length, // Only run after products are loaded
+  });
 
-    const categoryScore: Record<string, number> = {};
-    activities.forEach(({ productId, type }) => {
-      const product = products.find((p) => p.id === productId);
-      if (!product) return;
-      const weight = type === "purchase" ? 3 : type === "click" ? 2 : 1;
-      categoryScore[product.category] = (categoryScore[product.category] || 0) + weight;
-    });
+  // Collaborative: for now let's assume the backend handles this or we can reuse fetchRecommendations
+  // In a real app, this might be a separate endpoint /api/recommendations/collaborative
+  const collaborative = contentBased.slice(0, 2); // Mocking for now from the same API
 
-    const viewedIds = new Set(activities.map((a) => a.productId));
-    return products
-      .filter((p) => !viewedIds.has(p.id))
-      .sort((a, b) => (categoryScore[b.category] || 0) - (categoryScore[a.category] || 0))
-      .slice(0, 4);
-  }, [activities]);
-
-  // Collaborative: "people also viewed"
-  const collaborative = useMemo(() => {
-    if (!lastViewed) return [];
-    const ids = alsoViewed[lastViewed.id] || [];
-    return ids.map((id) => products.find((p) => p.id === id)!).filter(Boolean);
-  }, [lastViewed]);
-
-  return { trackActivity, contentBased, collaborative, lastViewed, activities };
+  return { 
+    trackActivity, 
+    contentBased, 
+    collaborative, 
+    lastViewed, 
+    isLoading: isLoadingProducts || isLoadingContentBased,
+    error: productError
+  };
 }

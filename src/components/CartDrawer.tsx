@@ -106,7 +106,7 @@ const CartDrawer = ({
                         {item.product.category}
                       </p>
                       <p className="text-sm font-bold gradient-text mt-1">
-                        ₹{(item.product.price * item.quantity).toLocaleString()}
+                        £{(item.product.price * item.quantity).toFixed(2)}
                       </p>
 
                       <div className="flex items-center justify-between mt-2">
@@ -146,7 +146,7 @@ const CartDrawer = ({
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm text-muted-foreground">
                     <span>Subtotal</span>
-                    <span>₹{subtotal.toLocaleString()}</span>
+                    <span>£{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm text-muted-foreground">
                     <span>Shipping</span>
@@ -154,7 +154,7 @@ const CartDrawer = ({
                   </div>
                   <div className="flex justify-between text-lg font-display font-bold text-foreground pt-2 border-t border-border">
                     <span>Total</span>
-                    <span className="gradient-text">₹{subtotal.toLocaleString()}</span>
+                    <span className="gradient-text">£{subtotal.toFixed(2)}</span>
                   </div>
                 </div>
                 <button
