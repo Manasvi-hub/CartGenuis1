@@ -1,5 +1,5 @@
 import { useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 import { toast } from "sonner";
 import { Sparkles, Github, Heart } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -51,36 +51,60 @@ const Index = () => {
     productsRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Stagger variants
+  const containerVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-background relative">
+    <div className="min-h-screen bg-background relative selection:bg-primary/30">
       <FloatingBackground />
 
-      {/* Enterprise loading overlay */}
+      {/* Industrial loading overlay */}
       <AnimatePresence>
         {isLoading && (
           <motion.div
             initial={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
             className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="flex flex-col items-center gap-6"
+              className="flex flex-col items-center gap-8"
             >
-              {/* Animated logo */}
               <div className="relative">
                 <motion.div
                   animate={{ rotate: 360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  className="w-16 h-16 rounded-full border-2 border-primary/30 border-t-primary"
+                  transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                  className="w-24 h-24 rounded-full border-[1px] border-primary/10 border-t-primary shadow-[0_0_40px_-10px_rgba(var(--primary),0.3)]"
                 />
-                <Sparkles className="absolute inset-0 m-auto w-6 h-6 text-primary" />
+                <Sparkles className="absolute inset-0 m-auto w-8 h-8 text-primary animate-pulse" />
               </div>
-              <div className="text-center space-y-2">
-                <h2 className="font-display text-xl font-semibold gradient-text">CartGenius</h2>
-                <p className="text-sm text-muted-foreground animate-pulse">Loading your personalized experience…</p>
+              <div className="text-center space-y-3">
+                <h2 className="font-display text-2xl font-bold tracking-tighter gradient-text">CartGenius</h2>
+                <div className="flex items-center gap-2 justify-center">
+                  <div className="w-1 h-1 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]" />
+                  <div className="w-1 h-1 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]" />
+                  <div className="w-1 h-1 rounded-full bg-primary animate-bounce" />
+                </div>
               </div>
             </motion.div>
           </motion.div>
@@ -94,89 +118,110 @@ const Index = () => {
         onSignOut={auth.signOut}
         onSignIn={() => auth.setShowAuth(true)}
       />
-      <HeroSection onExplore={scrollToProducts} />
 
-      {/* Explore Collections */}
-      <div ref={productsRef}>
-        <ExploreVariants
-          onView={handleView}
-          onAddToCart={handleAddToCart}
-          highlightBaseType={lastViewed?.category}
-        />
-      </div>
+      <motion.main
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <HeroSection onExplore={scrollToProducts} />
 
-      {/* AI Recommendations */}
-      <RecommendationSection
-        title="Recommended For You"
-        subtitle="Based on your recent activity"
-        products={contentBased}
-        reason={
-          lastViewed
-            ? `More like ${lastViewed.category} · Other styles you may like`
-            : undefined
-        }
-        onView={handleView}
-        onAddToCart={handleAddToCart}
-      />
+        <div className="container mx-auto px-6 relative z-10 space-y-32 pb-32">
+          {/* Explore Collections */}
+          <motion.div variants={itemVariants} ref={productsRef} className="scroll-mt-24">
+            <ExploreVariants
+              onView={handleView}
+              onAddToCart={handleAddToCart}
+              highlightBaseType={lastViewed?.category}
+            />
+          </motion.div>
 
-      {/* Collaborative */}
-      {lastViewed && collaborative.length > 0 && (
-        <RecommendationSection
-          title="People Also Bought"
-          subtitle="Popular picks from similar shoppers"
-          products={collaborative}
-          reason={`People who viewed ${lastViewed.name} also liked these`}
-          onView={handleView}
-          onAddToCart={handleAddToCart}
-        />
-      )}
+          {/* AI Recommendations */}
+          <motion.div variants={itemVariants} className="section-divider" />
+          
+          <motion.div variants={itemVariants}>
+            <RecommendationSection
+              title="Intelligence Curated"
+              subtitle="Optimized for your unique profile"
+              products={contentBased}
+              reason={
+                lastViewed
+                  ? `Synergizing with ${lastViewed.category} preferences`
+                  : undefined
+              }
+              onView={handleView}
+              onAddToCart={handleAddToCart}
+            />
+          </motion.div>
+
+          {/* Collaborative */}
+          {lastViewed && collaborative.length > 0 && (
+            <>
+              <motion.div variants={itemVariants} className="section-divider" />
+              <motion.div variants={itemVariants}>
+                <RecommendationSection
+                  title="Peer Trends"
+                  subtitle="Collaborative filtering analysis"
+                  products={collaborative}
+                  reason={`Network analysis matches your browsing patterns`}
+                  onView={handleView}
+                  onAddToCart={handleAddToCart}
+                />
+              </motion.div>
+            </>
+          )}
+        </div>
+      </motion.main>
 
       {/* Premium Footer */}
-      <footer className="relative border-t border-border/50 py-16 mt-8">
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/[0.02] to-transparent" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
+      <footer className="relative border-t border-white/5 py-24 bg-card/30 backdrop-blur-md">
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/[0.03] to-transparent pointer-events-none" />
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="grid md:grid-cols-4 gap-12 mb-20">
             {/* Brand */}
-            <div>
-              <div className="flex items-center gap-2 mb-3">
-                <Sparkles className="w-5 h-5 text-primary" />
-                <span className="font-display text-xl font-bold gradient-text">CartGenius</span>
+            <div className="col-span-2 space-y-6">
+              <div className="flex items-center gap-3">
+                <Sparkles className="w-6 h-6 text-primary" />
+                <span className="font-display text-2xl font-bold tracking-tight gradient-text">CartGenius</span>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
-                AI-powered smart shopping platform. Discover curated products tailored to your unique taste.
+              <p className="text-base text-muted-foreground leading-relaxed max-w-sm font-medium opacity-70">
+                Revolutionizing retail through industrial-grade AI. Delivering curated digital 
+                experiences for the modern consumer.
               </p>
             </div>
 
             {/* Quick Links */}
-            <div>
-              <h4 className="font-display font-semibold text-foreground mb-3">Quick Links</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
+            <div className="space-y-6">
+              <h4 className="font-display font-bold text-foreground text-sm uppercase tracking-widest">Platform</h4>
+              <ul className="space-y-4 text-sm font-semibold text-muted-foreground/60">
                 <li><button onClick={scrollToProducts} className="hover:text-primary transition-colors">Collections</button></li>
-                <li><button className="hover:text-primary transition-colors">New Arrivals</button></li>
-                <li><button className="hover:text-primary transition-colors">Best Sellers</button></li>
-                <li><button className="hover:text-primary transition-colors">About Us</button></li>
+                <li><button className="hover:text-primary transition-colors">Intelligence</button></li>
+                <li><button className="hover:text-primary transition-colors">Infrastructure</button></li>
+                <li><button className="hover:text-primary transition-colors">Ecosystem</button></li>
               </ul>
             </div>
 
             {/* Support */}
-            <div>
-              <h4 className="font-display font-semibold text-foreground mb-3">Support</h4>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li><button className="hover:text-primary transition-colors">Help Center</button></li>
-                <li><button className="hover:text-primary transition-colors">Shipping Info</button></li>
-                <li><button className="hover:text-primary transition-colors">Returns Policy</button></li>
-                <li><button className="hover:text-primary transition-colors">Contact Us</button></li>
+            <div className="space-y-6">
+              <h4 className="font-display font-bold text-foreground text-sm uppercase tracking-widest">Enterprise</h4>
+              <ul className="space-y-4 text-sm font-semibold text-muted-foreground/60">
+                <li><button className="hover:text-primary transition-colors">Solutions</button></li>
+                <li><button className="hover:text-primary transition-colors">Architecture</button></li>
+                <li><button className="hover:text-primary transition-colors">Documentation</button></li>
+                <li><button className="hover:text-primary transition-colors">Security</button></li>
               </ul>
             </div>
           </div>
 
-          <div className="border-t border-border/50 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-muted-foreground">
-              © 2026 CartGenius. All rights reserved.
+          <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row items-center justify-between gap-6">
+            <p className="text-[13px] font-bold text-muted-foreground/40 uppercase tracking-widest">
+              © 2026 CartGenius Industrial. All rights reserved.
             </p>
-            <p className="text-xs text-muted-foreground flex items-center gap-1">
-              Built with <Heart className="w-3 h-3 text-destructive fill-destructive" /> using React & AI
-            </p>
+            <div className="flex items-center gap-8 text-[13px] font-bold text-muted-foreground/40 uppercase tracking-widest">
+              <button className="hover:text-primary transition-colors">Privacy</button>
+              <button className="hover:text-primary transition-colors">Terms</button>
+              <button className="hover:text-primary transition-colors">Cookies</button>
+            </div>
           </div>
         </div>
       </footer>
@@ -204,12 +249,12 @@ const Index = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-4 right-4 z-50"
+            className="fixed bottom-8 right-8 z-50"
           >
-            <div className="glass-subtle border border-primary/20 px-4 py-2.5 rounded-lg flex items-center gap-3 text-sm shadow-lg">
-              <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-              <span className="text-muted-foreground">
-                Running in <span className="font-semibold text-foreground">Demo Mode</span>
+            <div className="glass border border-primary/20 px-5 py-3 rounded-xl flex items-center gap-4 text-sm shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+              <div className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
+              <span className="text-muted-foreground font-bold uppercase tracking-widest text-[11px]">
+                Active <span className="text-foreground">Demo Module</span>
               </span>
             </div>
           </motion.div>

@@ -16,63 +16,44 @@ const HeroSection = ({ onExplore }: { onExplore: () => void }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentWord((prev) => (prev + 1) % words.length);
-    }, 2500);
+    }, 3000);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse-glow" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse-glow" style={{ animationDelay: "1s" }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-primary/5 to-accent/5 rounded-full blur-3xl" />
-      </div>
-
-      {/* Floating particles */}
-      {[...Array(8)].map((_, i) => (
+    <section className="relative min-h-screen flex items-center justify-center pt-20">
+      <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
+        {/* Badge */}
         <motion.div
-          key={i}
-          className="absolute w-1 h-1 rounded-full bg-primary/40"
-          style={{
-            top: `${15 + Math.random() * 70}%`,
-            left: `${5 + Math.random() * 90}%`,
-          }}
-          animate={{ y: [-20, 20, -20], opacity: [0.2, 0.8, 0.2] }}
-          transition={{ duration: 3 + Math.random() * 2, repeat: Infinity, delay: i * 0.4 }}
-        />
-      ))}
-
-      <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-        {/* Pill badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="inline-flex items-center gap-2 glass-subtle px-5 py-2.5 rounded-full mb-8"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="inline-flex items-center gap-2.5 glass-subtle px-4 py-2 rounded-full mb-10 border-primary/20"
         >
-          <Sparkles className="w-4 h-4 text-primary animate-float" />
-          <span className="text-sm font-medium text-muted-foreground">Powered by Intelligent Recommendations</span>
+          <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+          <span className="text-[13px] font-semibold tracking-wide uppercase text-primary/90">
+            Powered by Next-Gen Intelligence
+          </span>
         </motion.div>
 
-        {/* Main heading */}
+        {/* Heading */}
         <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="text-5xl md:text-7xl lg:text-8xl font-bold font-display tracking-tight mb-6"
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="text-6xl md:text-8xl lg:text-[100px] font-bold tracking-tight mb-8 leading-[0.95]"
         >
-          Discover Curated
+          Curating Your
           <br />
-          <span className="relative inline-block min-w-[220px] md:min-w-[300px]">
+          <span className="relative inline-block min-w-[280px] md:min-w-[400px]">
             <AnimatePresence mode="wait">
               <motion.span
                 key={currentWord}
-                initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -30, filter: "blur(8px)" }}
-                transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className="gradient-text text-glow inline-block"
+                initial={{ opacity: 0, filter: "blur(15px)", y: 20 }}
+                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                exit={{ opacity: 0, filter: "blur(15px)", y: -20 }}
+                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                className="gradient-text text-glow pb-2"
               >
                 {words[currentWord]}
               </motion.span>
@@ -82,54 +63,52 @@ const HeroSection = ({ onExplore }: { onExplore: () => void }) => {
 
         {/* Subtitle */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.4 }}
+          className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto mb-14 leading-relaxed font-medium opacity-80"
         >
-          Browse hand-picked retail products from the world's finest collections.
-          Our AI learns your taste and surfaces what you'll love.
+          Experience a new era of personalized commerce. Curated collections 
+          seamlessly integrated with industrial-grade AI recommendations.
         </motion.p>
 
-        {/* CTA button */}
+        {/* CTA */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col items-center gap-8"
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="flex flex-col items-center gap-12"
         >
-          <motion.button
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+          <button
             onClick={onExplore}
-            className="btn-glow inline-flex items-center gap-3 bg-gradient-to-r from-primary to-accent px-10 py-4 rounded-full text-primary-foreground font-semibold text-lg group"
+            className="btn-premium group"
           >
             Explore Collections
-            <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1.5" />
-          </motion.button>
+            <ArrowRight className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-2" />
+          </button>
 
-          {/* Trust indicators */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="flex items-center gap-6 md:gap-8"
-          >
+          {/* Features */}
+          <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-6">
             {features.map((feat, i) => (
               <motion.div
                 key={feat.label}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 + i * 0.1 }}
-                className="flex items-center gap-2 text-muted-foreground"
+                transition={{ delay: 0.8 + i * 0.1 }}
+                className="flex items-center gap-3 text-muted-foreground/60 hover:text-primary/80 transition-colors duration-300"
               >
-                <feat.icon className="w-4 h-4 text-primary/70" />
-                <span className="text-xs font-medium hidden sm:inline">{feat.label}</span>
+                <div className="p-2 rounded-lg bg-primary/5">
+                  <feat.icon className="w-4 h-4 text-primary" />
+                </div>
+                <span className="text-sm font-semibold tracking-wide uppercase">{feat.label}</span>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         </motion.div>
       </div>
+
+      {/* Hero Bottom Fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-background to-transparent pointer-events-none" />
     </section>
   );
 };

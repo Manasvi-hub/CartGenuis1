@@ -30,7 +30,7 @@ const ProductCard = ({ product, index, onView, onAddToCart }: ProductCardProps) 
 
   const handleImageError = useCallback(() => {
     setImageError(true);
-    setImageLoaded(true); // Stop showing skeleton
+    setImageLoaded(true);
   }, []);
 
   return (
@@ -38,8 +38,8 @@ const ProductCard = ({ product, index, onView, onAddToCart }: ProductCardProps) 
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative glass product-card-hover rounded-xl overflow-hidden cursor-pointer"
+      transition={{ duration: 0.8, delay: index * 0.05, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative glass-subtle product-card-hover rounded-2xl overflow-hidden cursor-pointer border-white/5"
       onClick={() => onView(product.id)}
     >
       {/* Badge */}
@@ -47,38 +47,28 @@ const ProductCard = ({ product, index, onView, onAddToCart }: ProductCardProps) 
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.3 + index * 0.06 }}
-          className={`absolute top-3 left-3 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg ${badge.className}`}
+          transition={{ delay: 0.4 + index * 0.05 }}
+          className={`absolute top-4 left-4 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-2xl ${badge.className}`}
         >
           <badge.icon className="w-3 h-3" />
           {product.badge}
         </motion.div>
       )}
 
-      {/* Image */}
-      <div className="relative aspect-[3/4] overflow-hidden">
-        {/* Skeleton loader */}
+      {/* Image Container */}
+      <div className="relative aspect-[4/5] overflow-hidden">
         {!imageLoaded && (
-          <div
-            className="absolute inset-0 bg-muted animate-shimmer"
-            style={{
-              backgroundImage: "linear-gradient(90deg, transparent 25%, hsl(var(--muted-foreground) / 0.08) 50%, transparent 75%)",
-              backgroundSize: "200% 100%",
-            }}
-          />
+          <div className="absolute inset-0 bg-white/5 animate-pulse" />
         )}
 
-        {/* Fallback gradient when image fails */}
         {imageError ? (
           <div
-            className="absolute inset-0 flex flex-col items-center justify-center gap-3"
+            className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-secondary/30"
             style={{ background: getFallbackGradient(product.id) }}
           >
-            <div className="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur flex items-center justify-center">
-              <ImageOff className="w-8 h-8 text-white/50" />
-            </div>
-            <p className="text-white/70 text-sm font-medium text-center px-4 leading-snug">
-              {product.name}
+            <ImageOff className="w-10 h-10 text-white/20" />
+            <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest px-6 text-center">
+              Image Unvailable
             </p>
           </div>
         ) : (
@@ -86,22 +76,22 @@ const ProductCard = ({ product, index, onView, onAddToCart }: ProductCardProps) 
             src={product.image}
             alt={product.name}
             loading="lazy"
-            className={`w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-110 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`w-full h-full object-cover transition-all duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-110 ${imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`}
             onLoad={() => setImageLoaded(true)}
             onError={handleImageError}
           />
         )}
 
-        {/* Bottom gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent opacity-80" />
-
-        {/* Hover overlay */}
-        <div className="absolute inset-0 bg-background/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center gap-3">
+        {/* Sophisticated Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
+        
+        {/* Hover Action Overlay */}
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center gap-4 p-6 translate-y-4 group-hover:translate-y-0">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={(e) => { e.stopPropagation(); onView(product.id); }}
-            className="btn-glow flex items-center gap-2 bg-primary px-5 py-2.5 rounded-full text-primary-foreground font-medium text-sm"
+            className="w-full py-3 rounded-full bg-white text-black font-bold text-sm flex items-center justify-center gap-2 shadow-xl hover:bg-primary hover:text-white transition-all duration-300"
           >
             <Eye className="w-4 h-4" />
             Quick View
@@ -110,7 +100,7 @@ const ProductCard = ({ product, index, onView, onAddToCart }: ProductCardProps) 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={(e) => { e.stopPropagation(); onAddToCart(product.id); }}
-            className="flex items-center gap-2 glass px-5 py-2.5 rounded-full text-foreground font-medium text-sm hover:bg-card/80 transition-colors"
+            className="w-full py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold text-sm flex items-center justify-center gap-2 hover:bg-white/20 transition-all duration-300"
           >
             <ShoppingCart className="w-4 h-4" />
             Add to Cart
@@ -118,21 +108,29 @@ const ProductCard = ({ product, index, onView, onAddToCart }: ProductCardProps) 
         </div>
       </div>
 
-      {/* Content */}
-      <div className="absolute bottom-0 left-0 right-0 p-4">
-        <p className="text-[11px] text-primary/80 font-semibold uppercase tracking-[0.15em] mb-1">
-          {product.category}
-        </p>
-        <h3 className="font-display font-semibold text-base md:text-lg text-foreground mb-1.5 leading-tight line-clamp-2">
-          {product.name}
-        </h3>
-        <div className="flex items-center justify-between">
-          <span className="text-lg md:text-xl font-bold gradient-text">
+      {/* Content Area */}
+      <div className="p-5 space-y-3 relative z-10 bg-gradient-to-b from-transparent to-card/50">
+        <div className="flex justify-between items-start gap-4">
+          <div className="space-y-1">
+            <p className="text-[10px] font-bold text-primary uppercase tracking-[0.2em]">
+              {product.category}
+            </p>
+            <h3 className="font-display font-semibold text-lg text-foreground line-clamp-1 group-hover:text-primary transition-colors">
+              {product.name}
+            </h3>
+          </div>
+          <div className="flex items-center gap-1.5 bg-white/5 px-2 py-1 rounded-md border border-white/5">
+            <Star className="w-3 h-3 fill-star text-star" />
+            <span className="text-[11px] font-bold text-muted-foreground">{product.rating.toFixed(1)}</span>
+          </div>
+        </div>
+        
+        <div className="flex items-center justify-between pt-1">
+          <span className="text-2xl font-bold tracking-tight text-white">
             £{product.price.toFixed(2)}
           </span>
-          <div className="flex items-center gap-1">
-            <Star className="w-3.5 h-3.5 fill-star text-star" />
-            <span className="text-xs text-muted-foreground font-medium">{product.rating.toFixed(1)}</span>
+          <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-primary/50 group-hover:bg-primary/10 transition-all duration-500">
+            <TrendingUp className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary" />
           </div>
         </div>
       </div>
