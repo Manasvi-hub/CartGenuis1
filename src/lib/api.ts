@@ -8,7 +8,7 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 export async function fetchProducts(): Promise<Product[]> {
   try {
     // Artificial delay to show the animation (you asked for it!)
-    await delay(800);
+    await delay(300);
     
     const response = await fetch(`${API_BASE}/products`);
     if (!response.ok) {
@@ -26,7 +26,7 @@ export async function fetchProducts(): Promise<Product[]> {
           .replace(/\b\w/g, (l: string) => l.toUpperCase()),
         price: parseFloat(item.UnitPrice || item.price || "0"),
         rating: item.rating || (4 + Math.random()),
-        image: item.image || `https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800&q=80`, // Placeholder
+        image: item.image || `https://images.unsplash.com/photo-1543198126-a8ad8e47fb22?w=600&h=800&fit=crop`,
         category: item.Country || item.category || "General Retail",
         description: item.Description || "No description available",
         tags: ["retail", "ecommerce"]
@@ -41,6 +41,7 @@ export async function fetchProducts(): Promise<Product[]> {
 
 export async function fetchRecommendations(productId?: string): Promise<Product[]> {
   try {
+    // If we have a productId, translate it or search by it
     const url = productId 
       ? `${API_BASE}/recommendations?productId=${productId}`
       : `${API_BASE}/recommendations`;
@@ -63,6 +64,6 @@ export async function trackUserActivity(productId: string, type: string) {
       body: JSON.stringify({ productId, type, timestamp: Date.now() }),
     });
   } catch (err) {
-    // Just ignore tracking errors in dev
+    // Silent fail for tracking
   }
 }
