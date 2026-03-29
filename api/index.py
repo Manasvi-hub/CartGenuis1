@@ -5,6 +5,7 @@ import json
 from model import recommend
 
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 CORS(app)
 
 # Helper to load products for the /products route
